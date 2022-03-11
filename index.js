@@ -1,5 +1,5 @@
 const config = {
-  pomodoroPeriod: 1,
+  pomodoroPeriod: 3,
   shortBreakPeriod: 5,
   longBreakPeriod: 15,
   longBreakAfter: 4,
@@ -7,18 +7,19 @@ const config = {
   pomodoroCounter: 0,
 };
 
-let pomodoroPeriod = config.pomodoroPeriod;
-let minutes = pomodoroPeriod;
-let seconds = 0;
 const pomodoroMinElement = document.getElementById("pomodoroMin");
 const pomodoroSecElement = document.getElementById("pomodoroSec");
 const startBtn = document.getElementById("start");
-const pauseBtn = document.getElementById("pause");
 const stopBtn = document.getElementById("stop");
 
-const render = (min, sec) => {
-  let minutesToDisplay = String(min);
-  let secondsToDisplay = String(sec);
+let minutes = config.pomodoroPeriod;
+let seconds = 0;
+let pomodoroStarted = false;
+let stopPomodoro = false;
+
+const render = () => {
+  let minutesToDisplay = String(minutes);
+  let secondsToDisplay = String(seconds);
   minutesToDisplay =
     minutesToDisplay.length < 2 ? `0${minutesToDisplay}` : minutesToDisplay;
   secondsToDisplay =
@@ -27,39 +28,72 @@ const render = (min, sec) => {
   pomodoroSecElement.innerHTML = secondsToDisplay;
 };
 
-const timer = (min, sec) => {
-  return new Promise((resolve, reject) => {
-    if (min < 0) {
-      throw new Error("minute must be Positive number");
+const timer = () =>
+  new Promise((resolve, reject) => {
+    if (minutes < 0) {
+      throw new Error("minutes must be Positive number");
     }
     const interval = setInterval(() => {
-      console.log(seconds);
-      if (sec !== 0) {
-        sec--;
+      if (!pomodoroStarted) {
+        clearInterval(interval);
+        return;
+      }
+      if (stopPomodoro) {
+        clearInterval(interval);
+        return;
+      }
+
+      if (seconds !== 0) {
+        seconds--;
       } else {
-        if (min !== 0) {
-          sec = 60;
-          min--;
-          sec--;
+        if (minutes !== 0) {
+          seconds = 60;
+          minutes--;
+          seconds--;
         } else {
           clearInterval(interval);
           resolve();
         }
       }
-      render(min, sec);
+
+      render();
     }, 1000);
   });
-};
 
 const startPomodoro = () => {
   timer(minutes, seconds).then(() => {
-    timer(minutes, seconds);
+    if (autoStartBreak) {
+      timer(minutes, seconds);
+    }
   });
 };
 
+const reset = () => {
+  minutes = config.pomodoroPeriod;
+  seconds = 0;
+  pomodoroStarted = false;
+  startBtn.textContent = "Start";
+};
+
 const init = () => {
-  render(minutes, seconds);
-  startPomodoro();
+  render();
+
+  startBtn.addEventListener("click", () => {
+    pomodoroStarted = !pomodoroStarted;
+    if (pomodoroStarted) {
+      startBtn.textContent = "Pause";
+      startPomodoro();
+    } else {
+      startBtn.textContent = "Start";
+    }
+  });
+
+  stopBtn.addEventListener("click", () => {
+    stopPomodoro = true;
+    reset();
+    render();
+    stopPomodoro = false;
+  });
 };
 
 document.addEventListener("DOMContentLoaded", () => {
