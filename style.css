@@ -41,7 +41,10 @@ body {
 
 button[type*="button"] {
   font-size: 2em;
+<<<<<<< HEAD
   font-weight: bold;
+=======
+>>>>>>> c6022601bfdc7046285c10ab3d0c8c20a0892293
   margin: 10px;
   padding: 1% 7%;
   border-radius: 7px;
