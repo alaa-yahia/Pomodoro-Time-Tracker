@@ -7,8 +7,8 @@ const config = {
   pomodoroCounter: 0,
 };
 
-const pomodoroMinElement = document.getElementById("pomodoroMin");
-const pomodoroSecElement = document.getElementById("pomodoroSec");
+const pomodoroMinElement = document.getElementById("min");
+const pomodoroSecElement = document.getElementById("sec");
 const startBtn = document.getElementById("start");
 const stopBtn = document.getElementById("stop");
 
@@ -62,8 +62,16 @@ const timer = () =>
 
 const startPomodoro = () => {
   timer(minutes, seconds).then(() => {
-    if (autoStartBreak) {
-      timer(minutes, seconds);
+    //FIXME:reset state to config.pomodoro & btn to start
+    //FIXME: variable to detect which stage 'pomodoro or break
+
+    //TODO: convert min & sec to local variables
+    //TODO: add banner
+    //TODO: add reset icon & recenter start btn
+    if (config.autoStartBreak) {
+      minutes = config.shortBreakPeriod;
+      seconds = 0;
+      timer();
     }
   });
 };
