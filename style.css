@@ -5,6 +5,8 @@ body {
   margin: 0;
   padding: 0;
   font-family: "Roboto", sans-serif;
+  font-weight: bold;
+  box-sizing: border-box;
 }
 
 #container {
@@ -12,14 +14,34 @@ body {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   background-color: rgb(76, 145, 149);
 }
-#timerDisplay {
-  font-size: 6em;
-  font-weight: bold;
+
+#header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  background-color: rgb(69, 163, 168, 0.5);
+  color: rgb(240, 240, 240);
+  font-size: 1.3em;
 }
+
+#header div {
+  padding: 20px;
+}
+
+#state {
+  background-color: rgb(53, 99, 102, 0.5);
+  padding: 10px 15px;
+  border-radius: 7px;
+}
+
+#timer {
+  font-size: 6em;
+}
+
 #pomodoroWrapper {
   width: 50%;
   height: 50%;
@@ -41,16 +63,22 @@ body {
 
 button[type*="button"] {
   font-size: 2em;
-<<<<<<< HEAD
-  font-weight: bold;
-=======
->>>>>>> c6022601bfdc7046285c10ab3d0c8c20a0892293
   margin: 10px;
   padding: 1% 7%;
   border-radius: 7px;
   color: rgb(76, 145, 149);
   background-color: rgb(240, 240, 240);
   border-color: rgb(240, 240, 240);
+}
+
+footer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  background-color: rgb(69, 163, 168, 0.5);
+  color: rgb(240, 240, 240);
+  font-size: 1em;
+  padding: 10px 0;
 }
 
 @media screen and (max-width: 600px) {

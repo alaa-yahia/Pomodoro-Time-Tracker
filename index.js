@@ -7,15 +7,17 @@ const config = {
   pomodoroCounter: 0,
 };
 
-const pomodoroMinElement = document.getElementById("min");
-const pomodoroSecElement = document.getElementById("sec");
-const startBtn = document.getElementById("start");
-const stopBtn = document.getElementById("stop");
+const pomodoroMinElement = document.getElementById('min');
+const pomodoroSecElement = document.getElementById('sec');
+const startBtn = document.getElementById('start');
+const stopBtn = document.getElementById('stop');
+const stateDisplay = document.getElementById('state');
 
-let minutes = config.pomodoroPeriod;
-let seconds = 0;
+let minutes = 0; //config.pomodoroPeriod;
+let seconds = 3;
 let pomodoroStarted = false;
 let stopPomodoro = false;
+let state = 'Pomodoro';
 
 const render = () => {
   let minutesToDisplay = String(minutes);
@@ -31,7 +33,7 @@ const render = () => {
 const timer = () =>
   new Promise((resolve, reject) => {
     if (minutes < 0) {
-      throw new Error("minutes must be Positive number");
+      throw new Error('minutes must be Positive number');
     }
     const interval = setInterval(() => {
       if (!pomodoroStarted) {
@@ -61,17 +63,28 @@ const timer = () =>
   });
 
 const startPomodoro = () => {
-  timer(minutes, seconds).then(() => {
-    //FIXME:reset state to config.pomodoro & btn to start
-    //FIXME: variable to detect which stage 'pomodoro or break
-
-    //TODO: convert min & sec to local variables
-    //TODO: add banner
-    //TODO: add reset icon & recenter start btn
-    if (config.autoStartBreak) {
-      minutes = config.shortBreakPeriod;
-      seconds = 0;
-      timer();
+  timer().then(() => {
+    if (state === 'Break') {
+      reset();
+      render();
+      renderBtnState();
+      renderGameState();
+      return;
+    } else {
+      state = 'Break';
+      renderGameState();
+      minutes = 0; //config.shortBreakPeriod;
+      seconds = 3;
+      render();
+      if (config.autoStartBreak) {
+        timer();
+        renderBtnState();
+        renderGameState();
+      } else {
+        pomodoroStarted = false;
+        renderBtnState();
+        render();
+      }
     }
   });
 };
@@ -80,30 +93,43 @@ const reset = () => {
   minutes = config.pomodoroPeriod;
   seconds = 0;
   pomodoroStarted = false;
-  startBtn.textContent = "Start";
+  state = 'Pomodoro';
+};
+
+const renderBtnState = () => {
+  if (pomodoroStarted) {
+    startBtn.textContent = 'Pause';
+    startPomodoro();
+  } else {
+    startBtn.textContent = 'Start';
+  }
+};
+
+const renderGameState = () => {
+  stateDisplay.innerHTML = state;
 };
 
 const init = () => {
   render();
 
-  startBtn.addEventListener("click", () => {
+  startBtn.addEventListener('click', () => {
     pomodoroStarted = !pomodoroStarted;
-    if (pomodoroStarted) {
-      startBtn.textContent = "Pause";
-      startPomodoro();
-    } else {
-      startBtn.textContent = "Start";
-    }
+    renderBtnState();
   });
 
-  stopBtn.addEventListener("click", () => {
+  stopBtn.addEventListener('click', () => {
     stopPomodoro = true;
     reset();
     render();
+    renderBtnState();
+    renderGameState();
     stopPomodoro = false;
   });
 };
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener('DOMContentLoaded', () => {
   init();
 });
+
+//TODO: convert min & sec to local variables
+//TODO: add reset icon & recenter start btn
