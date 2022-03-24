@@ -1,11 +1,20 @@
-const config = {
-  pomodoroPeriod: 3,
-  shortBreakPeriod: 5,
-  longBreakPeriod: 15,
-  longBreakAfter: 4,
-  autoStartBreak: true,
-  pomodoroCounter: 0,
-};
+if (!localStorage.pomodoroConfig) {
+  sessionStorage.setItem(
+    'pomodoroConfig',
+    JSON.stringify({
+      pomodoroPeriod: 25,
+      shortBreakPeriod: 5,
+      longBreakPeriod: 15,
+      longBreakAfter: 4,
+      autoStartBreak: true,
+      pomodoroCounter: 0,
+    })
+  );
+}
+
+let x = sessionStorage.getItem('pomodoroConfig');
+const config = JSON.parse(localStorage.getItem('pomodoroConfig'));
+console.log(config.autoStartBreak);
 
 const pomodoroMinElement = document.getElementById('min');
 const pomodoroSecElement = document.getElementById('sec');
