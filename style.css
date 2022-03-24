@@ -1,10 +1,10 @@
-@import url("https://fonts.googleapis.com/css2?family=League+Gothic&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=League+Gothic&display=swap');
 
 html,
 body {
   margin: 0;
   padding: 0;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-weight: bold;
   box-sizing: border-box;
 }
@@ -61,7 +61,7 @@ body {
   width: 100%;
 }
 
-button[type*="button"] {
+button[type*='button'] {
   font-size: 2em;
   margin: 10px;
   padding: 1% 7%;
@@ -84,7 +84,11 @@ footer {
 @media screen and (max-width: 600px) {
   #btnContainer {
     flex: 1 0 auto;
-    background-color: blue;
     flex-wrap: Wrap;
   }
+}
+
+a {
+  color: white;
+  cursor: pointer;
 }
