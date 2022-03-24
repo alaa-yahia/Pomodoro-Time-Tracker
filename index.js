@@ -1,5 +1,5 @@
 if (!localStorage.pomodoroConfig) {
-  sessionStorage.setItem(
+  localStorage.setItem(
     'pomodoroConfig',
     JSON.stringify({
       pomodoroPeriod: 25,
@@ -12,9 +12,7 @@ if (!localStorage.pomodoroConfig) {
   );
 }
 
-let x = sessionStorage.getItem('pomodoroConfig');
 const config = JSON.parse(localStorage.getItem('pomodoroConfig'));
-console.log(config.autoStartBreak);
 
 const pomodoroMinElement = document.getElementById('min');
 const pomodoroSecElement = document.getElementById('sec');
@@ -22,8 +20,8 @@ const startBtn = document.getElementById('start');
 const stopBtn = document.getElementById('stop');
 const stateDisplay = document.getElementById('state');
 
-let minutes = 0; //config.pomodoroPeriod;
-let seconds = 3;
+let minutes = config.pomodoroPeriod;
+let seconds = 0;
 let pomodoroStarted = false;
 let stopPomodoro = false;
 let state = 'Pomodoro';
@@ -82,8 +80,8 @@ const startPomodoro = () => {
     } else {
       state = 'Break';
       renderGameState();
-      minutes = 0; //config.shortBreakPeriod;
-      seconds = 3;
+      minutes = config.shortBreakPeriod;
+      seconds = 0;
       render();
       if (config.autoStartBreak) {
         timer();
